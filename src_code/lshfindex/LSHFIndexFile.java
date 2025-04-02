@@ -67,7 +67,7 @@ public class LSHFIndexFile implements GlobalConst {
     private String getHashingBit(Vector100Dtype input, Vector100Dtype hashingVector, int b){
         int sum = 0;
         for (int i = 0; i < 100; i++) {
-            sum += hashingVector.getVector100DElement(i) * input.getVector100DElement(i);
+            sum += hashingVector.getVectorSpecificDimensionValue(i) * input.getVectorSpecificDimensionValue(i);
         }
         if (sum+b > 0){
             return "1";

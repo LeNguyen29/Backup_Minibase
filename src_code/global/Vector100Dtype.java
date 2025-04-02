@@ -15,42 +15,37 @@ public class Vector100Dtype {
     }
 
     // constructor
-    public Vector100Dtype(short[] vector) {
-        if (vector.length != SIZE || vector == null) {
-            throw new IllegalArgumentException("Vector must have " + SIZE + " elements");
-        }
+    public Vector100Dtype(short[] incomingVectorValue) {
+        this.validateNumberOfVectorDimensions(incomingVectorValue);
+
         this.vector = new short[SIZE];
         for (int i = 0; i < SIZE; i++) {
             short val = vector[i];
-            if (val < MIN_VALUE || val > MAX_VALUE) {
-                throw new IllegalArgumentException("Value at index " + i + " is out of range: " + val);
-            }
+            
+            this.validateVectorDimensionValue(val);
+
             this.vector[i] = val;
         }
     }
 
     // getter
     public short[] getVector100D() {
-        // System.out.println("vector clone: " + vector.clone());
         return vector.clone();
     }
 
     // setter
-    public void setVector100D(short[] vector) {
-        if (vector.length != SIZE || vector == null) {
-            throw new IllegalArgumentException("Vector must have " + SIZE + " elements");
-        }
+    public void setVector100D(short[] incomingVectorValue) {
+        this.validateNumberOfVectorDimensions(incomingVectorValue);
+
         for (int i = 0; i < SIZE; i++) {
-            short val = vector[i];
-            if (val < MIN_VALUE || val > MAX_VALUE) {
-                throw new IllegalArgumentException("Value at index " + i + " is out of range: " + val);
-            }
+            this.validateVectorDimensionValue(incomingVectorValue[i]);
         }
-        this.vector = vector.clone();
+        
+        this.vector = incomingVectorValue.clone();
     }
 
     // get specific element
-    public short getVector100DElement(int index) {
+    public short getVectorSpecificDimensionValue(int index) {
         if (index < 0 || index >= SIZE) {
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (SIZE - 1));
         }
@@ -58,13 +53,13 @@ public class Vector100Dtype {
     }
 
     // set specific element
-    public void setVector100DElement(int index, short value) {
+    public void setVectorSpecificDimensionValue(int index, short value) {
         if (index < 0 || index >= SIZE) {
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (SIZE - 1));
         }
-        if (value < MIN_VALUE || value > MAX_VALUE) {
-            throw new IllegalArgumentException("Value must be between " + MIN_VALUE + " and " + MAX_VALUE);
-        }
+
+        this.validateVectorDimensionValue(value);
+        
         vector[index] = value;
     }
 
@@ -82,8 +77,8 @@ public class Vector100Dtype {
     }
 
     public double computeDistance(Vector100Dtype other) {
-        if (other == null || other.vector.length != this.vector.length) {
-            throw new IllegalArgumentException("Vectors must have the same length.");
+        if (other == null) {
+            throw new IllegalArgumentException("Vector to compute distance against must not be empty");
         }
 
         double sum = 0.0;
@@ -92,5 +87,17 @@ public class Vector100Dtype {
             sum += diff * diff;
         }
         return Math.sqrt(sum);
+    }
+
+    private void validateNumberOfVectorDimensions(short[] dimensions) {
+        if (dimensions.length != SIZE) {
+            throw new IllegalArgumentException("Vector must have exactly" + SIZE + " dimensions");
+        }
+    }
+
+    private void validateVectorDimensionValue(short value) {
+        if (value < MIN_VALUE || value > MAX_VALUE) {
+            throw new IllegalArgumentException("Vector value out of range, must be between " + MIN_VALUE + " and " + MAX_VALUE);
+        }
     }
 }
