@@ -1,0 +1,102 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Attach to BatchInsert",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Attach to Query",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5006
+        },
+        {
+            "type": "java",
+            "name": "BatchInsert",
+            "request": "launch",
+            "mainClass": "batchinsert",
+            "args": "5 3 sampletests/sample_data_2.txt mydatabase",
+            "projectName": "src_b178d423",
+        },
+        {
+            "type": "java",
+            "name": "Query",
+            "request": "launch",
+            "mainClass": "query",
+            "args": "mydatabase sampletests/rquery1.txt Y 100",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "BMTest",
+            "request": "launch",
+            "mainClass": "tests.BMTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "BTTest",
+            "request": "launch",
+            "mainClass": "tests.BTTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "DBTest",
+            "request": "launch",
+            "mainClass": "tests.DBTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "HFTest",
+            "request": "launch",
+            "mainClass": "tests.HFTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "IndexTest",
+            "request": "launch",
+            "mainClass": "tests.IndexTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "JoinTest",
+            "request": "launch",
+            "mainClass": "tests.JoinTest",
+            "projectName": "src_b178d423"
+        },
+        {
+            "type": "java",
+            "name": "SortTest",
+            "request": "launch",
+            "mainClass": "tests.SortTest",
+            "projectName": "src_b178d423"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Compound: BatchInsert and Query",
+            "configurations": [
+                "Attach to BatchInsert",
+                "Attach to Query"
+            ]
+        }
+    ]
+}
