@@ -21,7 +21,7 @@ public class Vector100Dtype {
         this.vector = new short[SIZE];
         for (int i = 0; i < SIZE; i++) {
             short val = vector[i];
-            
+
             this.validateVectorDimensionValue(val);
 
             this.vector[i] = val;
@@ -40,7 +40,7 @@ public class Vector100Dtype {
         for (int i = 0; i < SIZE; i++) {
             this.validateVectorDimensionValue(incomingVectorValue[i]);
         }
-        
+
         this.vector = incomingVectorValue.clone();
     }
 
@@ -59,7 +59,7 @@ public class Vector100Dtype {
         }
 
         this.validateVectorDimensionValue(value);
-        
+
         vector[index] = value;
     }
 
@@ -97,7 +97,8 @@ public class Vector100Dtype {
 
     private void validateVectorDimensionValue(short value) {
         if (value < MIN_VALUE || value > MAX_VALUE) {
-            throw new IllegalArgumentException("Vector value out of range, must be between " + MIN_VALUE + " and " + MAX_VALUE);
+            throw new IllegalArgumentException(
+                    "Vector value out of range, must be between " + MIN_VALUE + " and " + MAX_VALUE);
         }
     }
 }

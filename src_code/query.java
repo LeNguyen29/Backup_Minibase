@@ -131,7 +131,8 @@ public class query {
                 System.out.println("Parsed lines: " + Arrays.toString(lines)); // Debugging
 
                 if (lines.length < 2) {
-                    throw new IOException("Invalid metadata format. Expected at least 2 lines, but got: " + lines.length);
+                    throw new IOException(
+                            "Invalid metadata format. Expected at least 2 lines, but got: " + lines.length);
                 }
 
                 h = Integer.parseInt(lines[0].split("=")[1]); // Parse h value
@@ -193,7 +194,8 @@ public class query {
 
             String[] tokens = line.trim().split("\\s+");
             if (tokens.length != Vector100Dtype.SIZE) {
-                throw new IOException("Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
+                throw new IOException(
+                        "Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
             }
 
             short[] vecArray = new short[Vector100Dtype.SIZE];
@@ -219,7 +221,8 @@ public class query {
         return count;
     }
 
-    private static int fullHeapfileScan(Heapfile hf, Vector100Dtype targetVector, int thresholdOrK, boolean isRange, String[] outputFields, int qa) throws Exception {
+    private static int fullHeapfileScan(Heapfile hf, Vector100Dtype targetVector, int thresholdOrK, boolean isRange,
+            String[] outputFields, int qa) throws Exception {
         int count = 0;
         Scan scan = hf.openScan();
         RID rid = new RID();
@@ -250,10 +253,10 @@ public class query {
     private static AttrType[] getSchemaForTuple() {
         // Define the schema for the tuples
         return new AttrType[] {
-            new AttrType(AttrType.attrInteger),
-            new AttrType(AttrType.attrVector100D),
-            new AttrType(AttrType.attrReal),
-            new AttrType(AttrType.attrVector100D)
+                new AttrType(AttrType.attrInteger),
+                new AttrType(AttrType.attrVector100D),
+                new AttrType(AttrType.attrReal),
+                new AttrType(AttrType.attrVector100D)
         };
     }
 }

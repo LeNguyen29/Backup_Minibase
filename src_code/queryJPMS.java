@@ -15,13 +15,13 @@ import lshfindex.*;
  */
 public class queryJPMS {
     public static void main(String[] args) {
-        
+
         CommandInput input = CommandInput.parseFromArgs(args);
 
         String queryString = null;
         try (BufferedReader br = new BufferedReader(new FileReader(input.querySourceFile))) {
             queryString = br.readLine();
-        } 
+        }
 
         if (queryString == null) {
             throw new Exception("Empty Query");
@@ -29,11 +29,9 @@ public class queryJPMS {
 
         CustomQuery query = CustomQuery.parseFromQueryString(queryString);
 
-
-
         int numPages = 10 * GlobalConst.NUMBUF;
         new SystemDefs(input.databaseName, numPages, input.numberOfBuffer, "Clock");
-        
+
         Heapfile hf = new Heapfile(input.databaseName);
 
         // Read metadata from the file
@@ -79,7 +77,8 @@ public class queryJPMS {
                 System.out.println("Parsed lines: " + Arrays.toString(lines)); // Debugging
 
                 if (lines.length < 2) {
-                    throw new IOException("Invalid metadata format. Expected at least 2 lines, but got: " + lines.length);
+                    throw new IOException(
+                            "Invalid metadata format. Expected at least 2 lines, but got: " + lines.length);
                 }
 
                 h = Integer.parseInt(lines[0].split("=")[1]); // Parse h value
@@ -141,7 +140,8 @@ public class queryJPMS {
 
             String[] tokens = line.trim().split("\\s+");
             if (tokens.length != Vector100Dtype.SIZE) {
-                throw new IOException("Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
+                throw new IOException(
+                        "Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
             }
 
             short[] vecArray = new short[Vector100Dtype.SIZE];
@@ -167,7 +167,8 @@ public class queryJPMS {
         return count;
     }
 
-    private static int fullHeapfileScan(Heapfile hf, Vector100Dtype targetVector, int thresholdOrK, boolean isRange, String[] outputFields, int qa) throws Exception {
+    private static int fullHeapfileScan(Heapfile hf, Vector100Dtype targetVector, int thresholdOrK, boolean isRange,
+            String[] outputFields, int qa) throws Exception {
         int count = 0;
         Scan scan = hf.openScan();
         RID rid = new RID();
@@ -198,18 +199,14 @@ public class queryJPMS {
     private static AttrType[] getSchemaForTuple() {
         // Define the schema for the tuples
         return new AttrType[] {
-            new AttrType(AttrType.attrInteger),
-            new AttrType(AttrType.attrVector100D),
-            new AttrType(AttrType.attrReal),
-            new AttrType(AttrType.attrVector100D)
+                new AttrType(AttrType.attrInteger),
+                new AttrType(AttrType.attrVector100D),
+                new AttrType(AttrType.attrReal),
+                new AttrType(AttrType.attrVector100D)
         };
     }
 
-    // private static 
-
-
-
-
+    // private static
 
 }
 
@@ -248,7 +245,8 @@ class CustomQuery {
     public final short[] targetVectorValues;
     public final Integer[] outputFields;
 
-    public CustomQuery(QueryType type, Integer targetColumnNumber, Integer nonNegativeRangeOrDistance, short[] targetVectorValues, Integer[] outputFields) {
+    public CustomQuery(QueryType type, Integer targetColumnNumber, Integer nonNegativeRangeOrDistance,
+            short[] targetVectorValues, Integer[] outputFields) {
         this.type = type;
         this.targetColumnNumber = targetColumnNumber;
         this.nonNegativeRangeOrDistance = nonNegativeRangeOrDistance;
@@ -275,9 +273,9 @@ class CustomQuery {
         }
 
         String[] queryFunctionParameters = query.substring(firstOpeningParentheses, query.length() - 1).split(",");
-        
+
         Integer targetColumnNumber = Integer.parseInt(queryFunctionParameters[0]);
-        
+
         String filePath = queryFunctionParameters[1];
         short[] vectorValues = getVectorFromFile(filePath);
 
@@ -285,8 +283,8 @@ class CustomQuery {
 
         Integer[] outputFields = new Integer[queryFunctionParameters.length - 3];
         for (int i = 3; i < queryFunctionParameters.length; i++) {
-            outputFields[i-3] = Integer.parseInt(queryFunctionParameters[i]);
-        } 
+            outputFields[i - 3] = Integer.parseInt(queryFunctionParameters[i]);
+        }
 
         return new CustomQuery(queryType, targetColumnNumber, nonNegativeRangeOrDistance, vectorValues, outputFields);
     }
@@ -301,7 +299,8 @@ class CustomQuery {
             String[] tokens = line.trim().split("\\s+");
 
             if (tokens.length != Vector100Dtype.SIZE) {
-                throw new IOException("Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
+                throw new IOException(
+                        "Expected " + Vector100Dtype.SIZE + " integers in target vector, but got " + tokens.length);
             }
 
             short[] vectorValues = new short[Vector100Dtype.SIZE];
@@ -313,8 +312,7 @@ class CustomQuery {
         }
     }
 }
-enum QueryType {
-    RANGE,
-    KNN,
-}
 
+enum QueryType {
+    RANGE, KNN,
+}

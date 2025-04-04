@@ -77,8 +77,11 @@ public class BatchInsertJPMS {
                 }
 
                 if (!shouldContinue) {
-                    // only the last tuple will have issue, others will work, so this is a break, not a continue
-                    System.out.println("Encountered empty line ahead, suggesting end of file. Previously processed entry with index: " + tupleCount);
+                    // only the last tuple will have issue, others will work, so this is a break,
+                    // not a continue
+                    System.out.println(
+                            "Encountered empty line ahead, suggesting end of file. Previously processed entry with index: "
+                                    + tupleCount);
                     break;
                 }
 
@@ -86,7 +89,7 @@ public class BatchInsertJPMS {
 
                 // declare headers for the tuple, allocating sizes for it
                 Tuple tuple = ParseTupleData(tupleColumnValues, tupleMetadata);
-                
+
                 RID rid = hf.insertRecord(tuple.getTupleByteArray());
 
                 // Insert the vector into the LSHF index with the RID
@@ -127,9 +130,10 @@ public class BatchInsertJPMS {
                 SystemDefs.JavabaseDB.write_page(lshfIndexPageId, lshfIndexPage);
 
                 // Step 4: Add a file entry for the LSHFIndexFile in the database
-                System.out.println("Adding file entry for LSHFIndexFile: " + dbName + "_lshfindex, PageId: " + lshfIndexPageId.pid);
+                System.out.println("Adding file entry for LSHFIndexFile: " + dbName + "_lshfindex, PageId: "
+                        + lshfIndexPageId.pid);
                 SystemDefs.JavabaseDB.add_file_entry(dbName + "JamesF4", lshfIndexPageId);
-                
+
                 // Step 5: Save each B+ tree layer of the LSHFIndexFile
                 for (int i = 0; i < L; i++) {
                     String layerFileName = dbName + "_layer" + i + "JamesF4";
@@ -203,7 +207,7 @@ public class BatchInsertJPMS {
 
     private static void RegisterLogstreamFileAndRedirectLogOutput() {
         try {
-            FileOutputStream logFile = new FileOutputStream("logfile.txt");  // Append mode
+            FileOutputStream logFile = new FileOutputStream("logfile.txt"); // Append mode
             PrintStream logStream = new PrintStream(logFile);
             PrintStream infoStream = new PrintStream(new PrefixPrintStream(logStream, "[INFO] "));
             PrintStream errorStream = new PrintStream(new PrefixPrintStream(logStream, "[ERROR] "));
@@ -218,11 +222,10 @@ public class BatchInsertJPMS {
 
     private static Tuple ParseTupleData(String[] tupleColumnValues, TupleMetadata tupleMetadata) throws Exception {
         Tuple tuple = new Tuple();
-        
+
         tuple.setHdr((short) tupleMetadata.attrTypes.length, tupleMetadata.attrTypes, tupleMetadata.strSizes);
 
-        for (int i = 0; i < tupleColumnValues.length; i++) 
-        {
+        for (int i = 0; i < tupleColumnValues.length; i++) {
             switch (tupleMetadata.attrTypes[i].attrType) {
                 case AttrType.attrInteger:
                     tuple.setIntFld(i + 1, Integer.parseInt(tupleColumnValues[i]));
@@ -253,7 +256,8 @@ public class BatchInsertJPMS {
     }
 }
 
-class TupleMetadata { // might wanna make this something within the codebase to be exposed to client ? considerations :v
+class TupleMetadata { // might wanna make this something within the codebase to be exposed to client ?
+                      // considerations :v
     public final AttrType[] attrTypes;
     public final short[] strSizes;
 
@@ -263,7 +267,6 @@ class TupleMetadata { // might wanna make this something within the codebase to 
         this.strSizes = strSizes;
     }
 }
-
 
 // Custom PrintStream that adds a prefix to each message
 class PrefixPrintStream extends PrintStream {

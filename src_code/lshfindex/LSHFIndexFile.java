@@ -24,12 +24,12 @@ public class LSHFIndexFile implements GlobalConst {
         b = new int[L][h];
         hashVectors = new Vector100Dtype[L][h];
         // Initialize B and hashing vectors
-        for(int i = 0; i<L; i++){
-            for(int j = 0; j<h; j++){
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < h; j++) {
                 b[i][j] = (int) (Math.random() * 20001) - 10000;
                 short[] vectorShort = new short[100];
-                for(int k = 0; k<100; k++){
-                    vectorShort[k] = (short)((Math.random() * 20001) - 10000);
+                for (int k = 0; k < 100; k++) {
+                    vectorShort[k] = (short) ((Math.random() * 20001) - 10000);
                 }
                 Vector100Dtype hashVector = new Vector100Dtype(vectorShort);
                 hashVectors[i][j] = hashVector;
@@ -58,28 +58,31 @@ public class LSHFIndexFile implements GlobalConst {
             // Create new B+ tree layers
             for (int i = 0; i < L; i++) {
                 String layerFileName = indexName + "_layer" + i;
-                layers[i] = new BTreeFile(layerFileName, AttrType.attrVector100D, Vector100Dtype.SIZE * 2, 1); // Ensure attrVector100D is used
+                layers[i] = new BTreeFile(layerFileName, AttrType.attrVector100D, Vector100Dtype.SIZE * 2, 1); // Ensure
+                                                                                                               // attrVector100D
+                                                                                                               // is
+                                                                                                               // used
             }
             System.out.println("Created new LSHFIndexFile: " + indexName);
         }
     }
 
-    private String getHashingBit(Vector100Dtype input, Vector100Dtype hashingVector, int b){
+    private String getHashingBit(Vector100Dtype input, Vector100Dtype hashingVector, int b) {
         int sum = 0;
         for (int i = 0; i < 100; i++) {
             sum += hashingVector.getVectorSpecificDimensionValue(i) * input.getVectorSpecificDimensionValue(i);
         }
-        if (sum+b > 0){
+        if (sum + b > 0) {
             return "1";
-        }
-        else return "0";
+        } else
+            return "0";
     }
 
     // Hash function to calculate hash value for a vector
     private int calculateHashValue(Vector100Dtype vector, int layerIndex) {
         String hash = "";
         for (int i = 0; i < h; i++) {
-            hash+=getHashingBit(vector, hashVectors[layerIndex][i], b[layerIndex][i]);
+            hash += getHashingBit(vector, hashVectors[layerIndex][i], b[layerIndex][i]);
         }
         return Integer.parseInt(hash, 2);
     }
@@ -156,13 +159,12 @@ public class LSHFIndexFile implements GlobalConst {
     // LSHFFileNNScan: Retrieve the nearest neighbors across all layers
     public Vector<RID> LSHFFileNNScan(Vector100DKey key, int count) {
         PriorityQueue<KeyDataEntry> nearestNeighbors = new PriorityQueue<>(
-            count,
-            (a, b) -> {
-                int distA = ((Vector100DKey) a.key).computeDistance(key);
-                int distB = ((Vector100DKey) b.key).computeDistance(key);
-                return Integer.compare(distA, distB);
-            }
-        );
+                count,
+                (a, b) -> {
+                    int distA = ((Vector100DKey) a.key).computeDistance(key);
+                    int distB = ((Vector100DKey) b.key).computeDistance(key);
+                    return Integer.compare(distA, distB);
+                });
 
         try {
             for (int i = 0; i < L; i++) { // Iterate over all layers
@@ -213,12 +215,15 @@ public class LSHFIndexFile implements GlobalConst {
             }
         }
     }
-    public int getL(){
+
+    public int getL() {
         return L;
     }
-    public int getH(){
+
+    public int getH() {
         return h;
     }
+
     public void print() {
         try {
             System.out.println("LSHF Index Contents:");

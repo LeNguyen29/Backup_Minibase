@@ -1,16 +1,14 @@
-package  catalog;
+package catalog;
+
 import chainexception.*;
 
 public class Cataloghferror extends ChainException {
 
- public Cataloghferror()
-   {
+   public Cataloghferror() {
       super();
    }
 
-   public Cataloghferror(Exception err, String name)
-	{
-	       super(err, name);
-	}
+   public Cataloghferror(Exception err, String name) {
+      super(err, name);
+   }
 }
-

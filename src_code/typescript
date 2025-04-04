@@ -1,6 +1,7 @@
 Script started on 2025-02-02 22:53:55-07:00 [TERM="xterm-256color" TTY="/dev/pts/11" COLUMNS="122" LINES="27"]
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ python3 autograder.py[Kmake test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -814,7 +815,8 @@ Query5 completed successfully!
 Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
-[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [?2004l
+[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [?2004l
+
 exit
 
 Script done on 2025-02-02 22:55:44-07:00 [COMMAND_EXIT_CODE="0"]

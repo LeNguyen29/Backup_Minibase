@@ -113,7 +113,8 @@ class BufHashTbl implements GlobalConst {
   /**
    * Returns the number of hash bucket used, value between 0 and HTSIZE-1
    *
-   * @param pageNo the page number for the page in file.
+   * @param pageNo
+   *          the page number for the page in file.
    * @return the bucket number in the hash table.
    */
   private int hash(PageId pageNo) {
@@ -130,8 +131,10 @@ class BufHashTbl implements GlobalConst {
    * Insert association between page pageNo and frame frameNo
    * into the hash table.
    *
-   * @param pageNo  page number in the bucket.
-   * @param frameNo frame number in the bucket.
+   * @param pageNo
+   *          page number in the bucket.
+   * @param frameNo
+   *          frame number in the bucket.
    * @return true if successful.
    */
   public boolean insert(PageId pageNo, int frameNo) {
@@ -152,7 +155,8 @@ class BufHashTbl implements GlobalConst {
    * Find a page in the hashtable, return INVALID_PAGE
    * on failure, otherwise the frame number.
    * 
-   * @param pageNo page number in the bucket.
+   * @param pageNo
+   *          page number in the bucket.
    */
   public int lookup(PageId pageNo) {
 
@@ -173,7 +177,8 @@ class BufHashTbl implements GlobalConst {
   /**
    * Remove the page from the hashtable.
    * 
-   * @param pageNo page number of the bucket.
+   * @param pageNo
+   *          page number of the bucket.
    */
   public boolean remove(PageId pageNo) {
 
@@ -339,17 +344,26 @@ public class BufMgr implements GlobalConst {
   /**
    * Factor out the common code for the two versions of Flush
    *
-   * @param pageid    the page number of the page which needs
-   *                  to be flushed.
-   * @param all_pages the total number of page to be flushed.
+   * @param pageid
+   *          the page number of the page which needs
+   *          to be flushed.
+   * @param all_pages
+   *          the total number of page to be flushed.
    *
-   * @exception HashOperationException     if there is a hashtable error.
-   * @exception PageUnpinnedException      when unpinning an unpinned page
-   * @exception PagePinnedException        when trying to free a pinned page
-   * @exception PageNotFoundException      when the page could not be found
-   * @exception InvalidPageNumberException when the page number is invalid
-   * @exception FileIOException            File I/O error
-   * @exception IOException                Other I/O errors
+   * @exception HashOperationException
+   *              if there is a hashtable error.
+   * @exception PageUnpinnedException
+   *              when unpinning an unpinned page
+   * @exception PagePinnedException
+   *              when trying to free a pinned page
+   * @exception PageNotFoundException
+   *              when the page could not be found
+   * @exception InvalidPageNumberException
+   *              when the page number is invalid
+   * @exception FileIOException
+   *              File I/O error
+   * @exception IOException
+   *              Other I/O errors
    */
   private void privFlushPages(PageId pageid, int all_pages)
       throws HashOperationException,
@@ -399,22 +413,24 @@ public class BufMgr implements GlobalConst {
         }
       }
 
-    // throws the exception 
+    // throws the exception
     if (all_pages != 0) {
       if (unpinned != 0) {
         System.out.println("page no still pinned: " + pageid);
         System.out.println("num of pages to flush " + all_pages);
         throw new PagePinnedException(null, "BUFMGR: PAGE_PINNED.");
       }
-        
+
     }
   }
 
   /**
    * Create a buffer manager object.
    *
-   * @param numbufs     number of buffers in the buffer pool.
-   * @param replacerArg name of the buffer replacement policy.
+   * @param numbufs
+   *          number of buffers in the buffer pool.
+   * @param replacerArg
+   *          name of the buffer replacement policy.
    */
   public BufMgr(int numbufs, String replacerArg)
 
@@ -465,20 +481,32 @@ public class BufMgr implements GlobalConst {
    * if emptyPage==TRUE, then actually no read is done to bring
    * the page in.
    *
-   * @param Page_Id_in_a_DB page number in the minibase.
-   * @param page            the pointer poit to the page.
-   * @param emptyPage       true (empty page); false (non-empty page)
+   * @param Page_Id_in_a_DB
+   *          page number in the minibase.
+   * @param page
+   *          the pointer poit to the page.
+   * @param emptyPage
+   *          true (empty page); false (non-empty page)
    *
-   * @exception ReplacerException           if there is a replacer error.
-   * @exception HashOperationException      if there is a hashtable error.
-   * @exception PageUnpinnedException       if there is a page that is already
-   *                                        unpinned.
-   * @exception InvalidFrameNumberException if there is an invalid frame number .
-   * @exception PageNotReadException        if a page cannot be read.
-   * @exception BufferPoolExceededException if the buffer pool is full.
-   * @exception PagePinnedException         if a page is left pinned .
-   * @exception BufMgrException             other error occured in bufmgr layer
-   * @exception IOException                 if there is other kinds of I/O error.
+   * @exception ReplacerException
+   *              if there is a replacer error.
+   * @exception HashOperationException
+   *              if there is a hashtable error.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception InvalidFrameNumberException
+   *              if there is an invalid frame number .
+   * @exception PageNotReadException
+   *              if a page cannot be read.
+   * @exception BufferPoolExceededException
+   *              if the buffer pool is full.
+   * @exception PagePinnedException
+   *              if a page is left pinned .
+   * @exception BufMgrException
+   *              other error occured in bufmgr layer
+   * @exception IOException
+   *              if there is other kinds of I/O error.
    */
 
   public void pinPage(PageId pin_pgid, Page page, boolean emptyPage)
@@ -578,15 +606,21 @@ public class BufMgr implements GlobalConst {
    * put it in a group of replacement candidates.
    * if pincount=0 before this call, return error.
    *
-   * @param globalPageId_in_a_DB page number in the minibase.
-   * @param dirty                the dirty bit of the frame
+   * @param globalPageId_in_a_DB
+   *          page number in the minibase.
+   * @param dirty
+   *          the dirty bit of the frame
    *
-   * @exception ReplacerException           if there is a replacer error.
-   * @exception PageUnpinnedException       if there is a page that is already
-   *                                        unpinned.
-   * @exception InvalidFrameNumberException if there is an invalid frame number .
-   * @exception HashEntryNotFoundException  if there is no entry of page in the
-   *                                        hash table.
+   * @exception ReplacerException
+   *              if there is a replacer error.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception InvalidFrameNumberException
+   *              if there is an invalid frame number .
+   * @exception HashEntryNotFoundException
+   *              if there is no entry of page in the
+   *              hash table.
    */
   public void unpinPage(PageId PageId_in_a_DB, boolean dirty)
       throws ReplacerException,
@@ -622,23 +656,36 @@ public class BufMgr implements GlobalConst {
    * and pin it. If buffer is full, ask DB to deallocate
    * all these pages and return error (null if error).
    *
-   * @param firstpage the address of the first page.
-   * @param howmany   total number of allocated new pages.
+   * @param firstpage
+   *          the address of the first page.
+   * @param howmany
+   *          total number of allocated new pages.
    * @return the first page id of the new pages.
    *
-   * @exception BufferPoolExceededException if the buffer pool is full.
-   * @exception HashOperationException      if there is a hashtable error.
-   * @exception ReplacerException           if there is a replacer error.
-   * @exception HashEntryNotFoundException  if there is no entry of page in the
-   *                                        hash table.
-   * @exception InvalidFrameNumberException if there is an invalid frame number.
-   * @exception PageUnpinnedException       if there is a page that is already
-   *                                        unpinned.
-   * @exception PagePinnedException         if a page is left pinned.
-   * @exception PageNotReadException        if a page cannot be read.
-   * @exception IOException                 if there is other kinds of I/O error.
-   * @exception BufMgrException             other error occured in bufmgr layer
-   * @exception DiskMgrException            other error occured in diskmgr layer
+   * @exception BufferPoolExceededException
+   *              if the buffer pool is full.
+   * @exception HashOperationException
+   *              if there is a hashtable error.
+   * @exception ReplacerException
+   *              if there is a replacer error.
+   * @exception HashEntryNotFoundException
+   *              if there is no entry of page in the
+   *              hash table.
+   * @exception InvalidFrameNumberException
+   *              if there is an invalid frame number.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception PagePinnedException
+   *              if a page is left pinned.
+   * @exception PageNotReadException
+   *              if a page cannot be read.
+   * @exception IOException
+   *              if there is other kinds of I/O error.
+   * @exception BufMgrException
+   *              other error occured in bufmgr layer
+   * @exception DiskMgrException
+   *              other error occured in diskmgr layer
    */
   public PageId newPage(Page firstpage, int howmany)
       throws BufferPoolExceededException,
@@ -683,21 +730,34 @@ public class BufMgr implements GlobalConst {
    * User should call this method if she needs to delete a page.
    * this routine will call DB to deallocate the page.
    * 
-   * @param globalPageId the page number in the data base.
-   * @exception InvalidBufferException      if buffer pool corrupted.
-   * @exception ReplacerException           if there is a replacer error.
-   * @exception HashOperationException      if there is a hash table error.
-   * @exception InvalidFrameNumberException if there is an invalid frame number.
-   * @exception PageNotReadException        if a page cannot be read.
-   * @exception BufferPoolExceededException if the buffer pool is already full.
-   * @exception PagePinnedException         if a page is left pinned.
-   * @exception PageUnpinnedException       if there is a page that is already
-   *                                        unpinned.
-   * @exception HashEntryNotFoundException  if there is no entry
-   *                                        of page in the hash table.
-   * @exception IOException                 if there is other kinds of I/O error.
-   * @exception BufMgrException             other error occured in bufmgr layer
-   * @exception DiskMgrException            other error occured in diskmgr layer
+   * @param globalPageId
+   *          the page number in the data base.
+   * @exception InvalidBufferException
+   *              if buffer pool corrupted.
+   * @exception ReplacerException
+   *              if there is a replacer error.
+   * @exception HashOperationException
+   *              if there is a hash table error.
+   * @exception InvalidFrameNumberException
+   *              if there is an invalid frame number.
+   * @exception PageNotReadException
+   *              if a page cannot be read.
+   * @exception BufferPoolExceededException
+   *              if the buffer pool is already full.
+   * @exception PagePinnedException
+   *              if a page is left pinned.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception HashEntryNotFoundException
+   *              if there is no entry
+   *              of page in the hash table.
+   * @exception IOException
+   *              if there is other kinds of I/O error.
+   * @exception BufMgrException
+   *              other error occured in bufmgr layer
+   * @exception DiskMgrException
+   *              other error occured in diskmgr layer
    */
   public void freePage(PageId globalPageId)
       throws InvalidBufferException,
@@ -749,15 +809,22 @@ public class BufMgr implements GlobalConst {
   /**
    * Added to flush a particular page of the buffer pool to disk
    * 
-   * @param pageid the page number in the database.
+   * @param pageid
+   *          the page number in the database.
    *
-   * @exception HashOperationException if there is a hashtable error.
-   * @exception PageUnpinnedException  if there is a page that is already
-   *                                   unpinned.
-   * @exception PagePinnedException    if a page is left pinned.
-   * @exception PageNotFoundException  if a page is not found.
-   * @exception BufMgrException        other error occured in bufmgr layer
-   * @exception IOException            if there is other kinds of I/O error.
+   * @exception HashOperationException
+   *              if there is a hashtable error.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception PagePinnedException
+   *              if a page is left pinned.
+   * @exception PageNotFoundException
+   *              if a page is not found.
+   * @exception BufMgrException
+   *              other error occured in bufmgr layer
+   * @exception IOException
+   *              if there is other kinds of I/O error.
    */
   public void flushPage(PageId pageid)
       throws HashOperationException,
@@ -772,13 +839,19 @@ public class BufMgr implements GlobalConst {
   /**
    * Flushes all pages of the buffer pool to disk
    * 
-   * @exception HashOperationException if there is a hashtable error.
-   * @exception PageUnpinnedException  if there is a page that is already
-   *                                   unpinned.
-   * @exception PagePinnedException    if a page is left pinned.
-   * @exception PageNotFoundException  if a page is not found.
-   * @exception BufMgrException        other error occured in bufmgr layer
-   * @exception IOException            if there is other kinds of I/O error.
+   * @exception HashOperationException
+   *              if there is a hashtable error.
+   * @exception PageUnpinnedException
+   *              if there is a page that is already
+   *              unpinned.
+   * @exception PagePinnedException
+   *              if a page is left pinned.
+   * @exception PageNotFoundException
+   *              if a page is not found.
+   * @exception BufMgrException
+   *              other error occured in bufmgr layer
+   * @exception IOException
+   *              if there is other kinds of I/O error.
    */
   public void flushAllPages()
       throws HashOperationException,

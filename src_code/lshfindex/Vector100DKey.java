@@ -3,17 +3,22 @@ package lshfindex;
 import global.*;
 import btree.*;
 
-/** Vector100DKey: It extends the KeyClass.
- *  It defines the Vector100Dtype Key with an associated hash value.
+/**
+ * Vector100DKey: It extends the KeyClass.
+ * It defines the Vector100Dtype Key with an associated hash value.
  */
 public class Vector100DKey extends KeyClass {
 
     private int hashValue; // Hash value of the vector
     private Vector100Dtype vector; // Original vector
 
-    /** Class constructor
-     *  @param vector the original vector
-     *  @param hashValue the hash value of the vector
+    /**
+     * Class constructor
+     * 
+     * @param vector
+     *            the original vector
+     * @param hashValue
+     *            the hash value of the vector
      */
     public Vector100DKey(Vector100Dtype vector, int hashValue) {
         this.vector = new Vector100Dtype(vector.getVector100D());
@@ -21,35 +26,43 @@ public class Vector100DKey extends KeyClass {
     }
 
     public Vector100DKey(Vector100Dtype vector) {
-      this.vector = new Vector100Dtype(vector.getVector100D());
-      int prime = 31;
-      int hash = 0;
-      for (int j = 0; j < Vector100Dtype.SIZE; j++) {
-        hash += vector.getVector100D()[j];
+        this.vector = new Vector100Dtype(vector.getVector100D());
+        int prime = 31;
+        int hash = 0;
+        for (int j = 0; j < Vector100Dtype.SIZE; j++) {
+            hash += vector.getVector100D()[j];
         }
         this.hashValue = (Math.abs(hash) % prime) + 1;
     }
 
-    /** Get the hash value
-     *  @return the hash value
+    /**
+     * Get the hash value
+     * 
+     * @return the hash value
      */
     public int getHashValue() {
         return hashValue;
     }
+
     public void setHashValue(int hashValue) {
         this.hashValue = hashValue;
     }
 
-    /** Get the original vector
-     *  @return the original vector
+    /**
+     * Get the original vector
+     * 
+     * @return the original vector
      */
     public Vector100Dtype getVector() {
         return new Vector100Dtype(vector.getVector100D());
     }
 
-    /** Compute the Euclidean distance between two vectors
-     *  @param other the other Vector100DKey
-     *  @return the Euclidean distance
+    /**
+     * Compute the Euclidean distance between two vectors
+     * 
+     * @param other
+     *            the other Vector100DKey
+     * @return the Euclidean distance
      */
     public int computeDistance(Vector100DKey other) {
         int sum = 0;

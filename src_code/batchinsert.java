@@ -109,8 +109,7 @@ public class batchinsert {
 
                 // populate the tuple
                 tuple.setHdr((short) numAttrs, attrTypes, strSizes);
-                for (int i = 0; i < numAttrs; i++) 
-                {
+                for (int i = 0; i < numAttrs; i++) {
                     switch (attrTypes[i].attrType) {
                         case AttrType.attrInteger:
                             tuple.setIntFld(i + 1, Integer.parseInt(tupleValues[i]));
@@ -177,9 +176,10 @@ public class batchinsert {
                 SystemDefs.JavabaseDB.write_page(lshfIndexPageId, lshfIndexPage);
 
                 // Step 4: Add a file entry for the LSHFIndexFile in the database
-                System.out.println("Adding file entry for LSHFIndexFile: " + dbName + "_lshfindex, PageId: " + lshfIndexPageId.pid);
+                System.out.println("Adding file entry for LSHFIndexFile: " + dbName + "_lshfindex, PageId: "
+                        + lshfIndexPageId.pid);
                 SystemDefs.JavabaseDB.add_file_entry(dbName, lshfIndexPageId);
-                
+
                 // Step 5: Save each B+ tree layer of the LSHFIndexFile
                 for (int i = 0; i < L; i++) {
                     String layerFileName = dbName + "_layer" + i;

@@ -1,9 +1,12 @@
 Script started on 2025-01-30 18:28:47-07:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="140" LINES="12"]
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src/tests[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src/tests[00m$ make tests
-[?2004lmake: *** No rule to make target 'tests'.  Stop.
+[?2004l
+make: *** No rule to make target 'tests'.  Stop.
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src/tests[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src/tests[00m$ make testssudo apt install openjdk-21-jre-headlessupdate[K[2Pjava -version[3Pwhich javacd minjavals[Kcd 510[4Plssudo apt updatepasswd evelynvb1511[11Pevbranneapt install openjdk-11-jdkupdate[K[5@sudo [C[C[C[C[C[C[C[C[C[C[2Pjava -version[3Pwhich javals[Kwhich javajava -versionsudo apt update[5P[C[C[C[C[C[C[C[C[C[Cinstall openjdk-11-jdkevbranne[Kpasswd evelynvb1511[4Psudo apt updatels[Kcd 510[4Plscd minjavawhich javajava -versionsudo apt updateinstall openjdk-21-jre-headlessmake tests[K[Kcd ..
-[?2004l[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -618,7 +621,8 @@ Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make db
-[?2004lmake -C global
+[?2004l
+make -C global
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/global'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath /usr/lib/jvm/java-21-openjdk-amd64/lib/classes.zip:.:..:/p/course/cs784-raghu/minibase_share/javaminibase/construction *.java
 PageId.java:47: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
@@ -709,9 +713,12 @@ make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/ite
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath /usr/lib/jvm/java-21-openjdk-amd64/lib/classes.zip:.:..:/p/course/cs784-raghu/minibase_share/javaminibase/construction *.java
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/iterator'
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [7mjavac diskmgr/*.java[27m
-[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cjavac diskmgr/*.java
-[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[?2004ldiskmgr/DB.java:278: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
+
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cjavac diskmgr/*.java
+
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l
+diskmgr/DB.java:278: warning: [removal] Integer(int) in Integer has been deprecated and marked for removal
 	Integer intmask = new Integer(1);
 	                  ^
 diskmgr/DB.java:279: warning: [removal] Byte(byte) in Byte has been deprecated and marked for removal
@@ -734,7 +741,8 @@ diskmgr/DB.java:804: warning: [removal] Integer(int) in Integer has been depreca
 	                  ^
 7 warnings
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ javac diskmgr/*.java[13Pmake dbtest
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -1457,7 +1465,8 @@ Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test[Kmake test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -2109,8 +2118,32 @@ Query5 completed successfully!
 Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
-[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -2714,8 +2747,10 @@ Query5 completed successfully!
 Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
-[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ [K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ 
+[K]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -3359,7 +3394,8 @@ Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.
@@ -3965,7 +4001,8 @@ Finished joins testing
 join tests completed successfully
 make[1]: Leaving directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 [?2004h]0;evelynvb1511@Evelyn-XPS13: ~/510/minjava/javaminibase/src[01;32mevelynvb1511@Evelyn-XPS13[00m:[01;34m~/510/minjava/javaminibase/src[00m$ make test
-[?2004lcd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
+[?2004l
+cd tests; make bmtest dbtest; whoami; make hftest bttest indextest jointest sorttest sortmerge
 make[1]: Entering directory '/home/evelynvb1511/510/minjava/javaminibase/src/tests'
 /usr/lib/jvm/java-21-openjdk-amd64/bin/javac -classpath .:.. TestDriver.java BMTest.java
 Note: Some input files use or override a deprecated API.

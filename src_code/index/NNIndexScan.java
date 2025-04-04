@@ -20,8 +20,7 @@ import btree.*;
  * - int count: num of nearest neighbors requested
  * 
  */
-public class NNIndexScan extends Iterator 
-{
+public class NNIndexScan extends Iterator {
     // class fields
     public FldSpec[] perm_mat;
     private IndexFile indFile;
@@ -42,26 +41,43 @@ public class NNIndexScan extends Iterator
     /**
      * Class constructor: set up the NN index scan
      * 
-     * @param index type of the index (must be IndexType.LSHFIndex)
-     * @param relName name of the input relation (heapfile name)
-     * @param indName name of the input index (LSHF index file name)
-     * @param types array of types in this relation
-     * @param str_sizes array of string sizes (for attributes that are string)
-     * @param noInFlds number of fields in input tuple
-     * @param noOutFlds number of fields in output tuple
-     * @param outFlds fields to project
-     * @param selects selection conditions to apply (first one is primary)
-     * @param fldNum field number of the indexed field
-     * @param query the query vector (of type Vector100Dtype)
-     * @param count number of nearest neighbors requested; if count is 0, return 
-     * all entries sorted by distance
-     * @exception IndexException if there is an error from the lower layers
-     * @exception InvalidTypeException if the tuple type is not valid
-     * @exception InvalidTupleSizeException if the tuple size is not valid
-     * @exception UnknownIndexTypeException if the index type is unknown or not supported
-     * @exception IOException if an I/O error occurs
+     * @param index
+     *            type of the index (must be IndexType.LSHFIndex)
+     * @param relName
+     *            name of the input relation (heapfile name)
+     * @param indName
+     *            name of the input index (LSHF index file name)
+     * @param types
+     *            array of types in this relation
+     * @param str_sizes
+     *            array of string sizes (for attributes that are string)
+     * @param noInFlds
+     *            number of fields in input tuple
+     * @param noOutFlds
+     *            number of fields in output tuple
+     * @param outFlds
+     *            fields to project
+     * @param selects
+     *            selection conditions to apply (first one is primary)
+     * @param fldNum
+     *            field number of the indexed field
+     * @param query
+     *            the query vector (of type Vector100Dtype)
+     * @param count
+     *            number of nearest neighbors requested; if count is 0, return
+     *            all entries sorted by distance
+     * @exception IndexException
+     *                if there is an error from the lower layers
+     * @exception InvalidTypeException
+     *                if the tuple type is not valid
+     * @exception InvalidTupleSizeException
+     *                if the tuple size is not valid
+     * @exception UnknownIndexTypeException
+     *                if the index type is unknown or not supported
+     * @exception IOException
+     *                if an I/O error occurs
      */
-    public NNIndexScan(IndexType index, 
+    public NNIndexScan(IndexType index,
             String relName,
             final String indName,
             AttrType types[],
@@ -73,9 +89,8 @@ public class NNIndexScan extends Iterator
             final int fldNum,
             Vector100Dtype query,
             int count)
-    throws IndexException, InvalidTypeException, InvalidTupleSizeException,
-    UnknownIndexTypeException, IOException 
-    {
+            throws IndexException, InvalidTypeException, InvalidTupleSizeException,
+            UnknownIndexTypeException, IOException {
         _fldNum = fldNum;
         _noInFlds = noInFlds;
         _types = types;
@@ -85,7 +100,8 @@ public class NNIndexScan extends Iterator
         AttrType[] Jtypes = new AttrType[noOutFlds];
         short[] ts_sizes;
 
-        // Create the output tuple types based on the input types and the fields to project
+        // Create the output tuple types based on the input types and the fields to
+        // project
         Jtuple = new Tuple();
         try {
             ts_sizes = TupleUtils.setup_op_tuple(Jtuple, Jtypes, types, noInFlds, str_sizes, outFlds, noOutFlds);
@@ -125,11 +141,10 @@ public class NNIndexScan extends Iterator
                 try {
                     // instantiate the LSH forest index file
                     lshfIndexFile = new LSHFIndexFile(indName);
-                } 
-                catch (Exception e) {
+                } catch (Exception e) {
                     throw new IndexException(e, "NNIndexScan.java: LSHFIndexFile constructor exception");
                 }
-                
+
                 key = new Vector100DKey(query);
                 rid_results = lshfIndexFile.LSHFFileNNScan(key, count);
                 break;
@@ -143,16 +158,17 @@ public class NNIndexScan extends Iterator
      * heapfile using the RID from the index scan
      * 
      * @return the next matching tuple, or null if no more tuples are available
-     * @exception IndexException if there is an error from the lower layers
-     * @exception UnknownKeyTypeException if the key type is unknown
-     * @exception IOException if an I/O error occurs
+     * @exception IndexException
+     *                if there is an error from the lower layers
+     * @exception UnknownKeyTypeException
+     *                if the key type is unknown
+     * @exception IOException
+     *                if an I/O error occurs
      */
-    public Tuple get_next() throws IndexException, UnknownKeyTypeException, IOException 
-    {
+    public Tuple get_next() throws IndexException, UnknownKeyTypeException, IOException {
         RID rid;
 
-        for(int i = 0; i < rid_results.size(); i++) 
-        {
+        for (int i = 0; i < rid_results.size(); i++) {
             rid = rid_results.get(i);
             try {
                 tuple1 = hf.getRecord(rid);

@@ -1,17 +1,15 @@
 package heap;
+
 import chainexception.*;
 
-public class FieldNumberOutOfBoundException extends ChainException{
+public class FieldNumberOutOfBoundException extends ChainException {
 
-   public FieldNumberOutOfBoundException()
-   {
+   public FieldNumberOutOfBoundException() {
       super();
    }
-   
-   public FieldNumberOutOfBoundException (Exception ex, String name)
-   {
-      super(ex, name); 
+
+   public FieldNumberOutOfBoundException(Exception ex, String name) {
+      super(ex, name);
    }
 
 }
-
