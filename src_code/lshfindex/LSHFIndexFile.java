@@ -35,35 +35,10 @@ public class LSHFIndexFile implements GlobalConst {
                 hashVectors[i][j] = hashVector;
             }
         }
-        boolean indexExists = true;
-
-        // Check if all layer files exist
+        
         for (int i = 0; i < L; i++) {
-            String layerFileName = indexName + "_layer" + i;
-            File layerFile = new File(layerFileName);
-            if (!layerFile.exists()) {
-                indexExists = false;
-                break;
-            }
-        }
-
-        if (indexExists) {
-            // Load existing B+ tree layers
-            for (int i = 0; i < L; i++) {
-                String layerFileName = indexName + "_layer" + i;
-                layers[i] = new BTreeFile(layerFileName); // Load existing B+ tree
-            }
-            System.out.println("Loaded existing LSHFIndexFile: " + indexName);
-        } else {
-            // Create new B+ tree layers
-            for (int i = 0; i < L; i++) {
-                String layerFileName = indexName + "_layer" + i;
-                layers[i] = new BTreeFile(layerFileName, AttrType.attrVector100D, Vector100Dtype.SIZE * 2, 1); // Ensure
-                                                                                                               // attrVector100D
-                                                                                                               // is
-                                                                                                               // used
-            }
-            System.out.println("Created new LSHFIndexFile: " + indexName);
+            String layerFileName = indexName + "_layer_" + i;
+            layers[i] = new BTreeFile(layerFileName, AttrType.attrVector100D, Vector100Dtype.SIZE * 2, 1);
         }
     }
 

@@ -1,0 +1,9 @@
+Replacer: Clock
+
+Registering IRSS FILE mydatabase
+Registering IRSS FILE mydatabase_layer_0
+Registering IRSS FILE mydatabase_layer_1
+Registering IRSS FILE mydatabase_layer_2
+Found a total of 380
+Number of disk pages read: 4
+Number of disk pages written: 2

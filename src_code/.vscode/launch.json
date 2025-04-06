@@ -38,56 +38,56 @@
             "request": "launch",
             "mainClass": "query",
             "args": "mydatabase sampletests/rquery1.txt Y 100",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "BMTest",
             "request": "launch",
             "mainClass": "tests.BMTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "BTTest",
             "request": "launch",
             "mainClass": "tests.BTTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "DBTest",
             "request": "launch",
             "mainClass": "tests.DBTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "HFTest",
             "request": "launch",
             "mainClass": "tests.HFTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "IndexTest",
             "request": "launch",
             "mainClass": "tests.IndexTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "JoinTest",
             "request": "launch",
             "mainClass": "tests.JoinTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         },
         {
             "type": "java",
             "name": "SortTest",
             "request": "launch",
             "mainClass": "tests.SortTest",
-            "projectName": "src_b178d423"
+            "projectName": "src_code_f809c65c"
         }
     ],
     "compounds": [

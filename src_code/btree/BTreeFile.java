@@ -36,10 +36,8 @@ public class BTreeFile extends IndexFile
 	 * used to drive a visualization tool that shows the inner workings of the
 	 * b-tree during its operations.
 	 * 
-	 * @param filename
-	 *            input parameter. The trace file name
-	 * @exception IOException
-	 *                error from the lower layer
+	 * @param filename input parameter. The trace file name
+	 * @exception IOException error from the lower layer
 	 */
 	public static void traceFilename(String filename)
 			throws IOException {
@@ -51,8 +49,7 @@ public class BTreeFile extends IndexFile
 	/**
 	 * Stop tracing. And close trace file.
 	 * 
-	 * @exception IOException
-	 *                error from the lower layer
+	 * @exception IOException error from the lower layer
 	 */
 	public static void destroyTrace()
 			throws IOException {
@@ -106,7 +103,7 @@ public class BTreeFile extends IndexFile
 			SystemDefs.JavabaseDB.add_file_entry(fileName, pageno);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new AddFileEntryException(e, "");
+			throw new AddFileEntryException(e, "File Entry error, cannot add");
 		}
 	}
 
@@ -155,14 +152,10 @@ public class BTreeFile extends IndexFile
 	 * BTreeFile class
 	 * an index file with given filename should already exist; this opens it.
 	 * 
-	 * @param filename
-	 *            the B+ tree file name. Input parameter.
-	 * @exception GetFileEntryException
-	 *                can not ger the file from DB
-	 * @exception PinPageException
-	 *                failed when pin a page
-	 * @exception ConstructPageException
-	 *                BT page constructor failed
+	 * @param filename the B+ tree file name. Input parameter.
+	 * @exception GetFileEntryException  can not ger the file from DB
+	 * @exception PinPageException       failed when pin a page
+	 * @exception ConstructPageException BT page constructor failed
 	 */
 	public BTreeFile(String filename)
 			throws GetFileEntryException,
@@ -184,24 +177,16 @@ public class BTreeFile extends IndexFile
 	/**
 	 * if index file exists, open it; else create it.
 	 * 
-	 * @param filename
-	 *            file name. Input parameter.
-	 * @param keytype
-	 *            the type of key. Input parameter.
-	 * @param keysize
-	 *            the maximum size of a key. Input parameter.
-	 * @param delete_fashion
-	 *            full delete or naive delete. Input parameter.
-	 *            It is either DeleteFashion.NAIVE_DELETE or
-	 *            DeleteFashion.FULL_DELETE.
-	 * @exception GetFileEntryException
-	 *                can not get file
-	 * @exception ConstructPageException
-	 *                page constructor failed
-	 * @exception IOException
-	 *                error from lower layer
-	 * @exception AddFileEntryException
-	 *                can not add file into DB
+	 * @param filename       file name. Input parameter.
+	 * @param keytype        the type of key. Input parameter.
+	 * @param keysize        the maximum size of a key. Input parameter.
+	 * @param delete_fashion full delete or naive delete. Input parameter.
+	 *                       It is either DeleteFashion.NAIVE_DELETE or
+	 *                       DeleteFashion.FULL_DELETE.
+	 * @exception GetFileEntryException  can not get file
+	 * @exception ConstructPageException page constructor failed
+	 * @exception IOException            error from lower layer
+	 * @exception AddFileEntryException  can not add file into DB
 	 */
 	public BTreeFile(String filename, int keytype,
 			int keysize, int delete_fashion)
@@ -232,14 +217,10 @@ public class BTreeFile extends IndexFile
 	/**
 	 * Close the B+ tree file. Unpin header page.
 	 * 
-	 * @exception PageUnpinnedException
-	 *                error from the lower layer
-	 * @exception InvalidFrameNumberException
-	 *                error from the lower layer
-	 * @exception HashEntryNotFoundException
-	 *                error from the lower layer
-	 * @exception ReplacerException
-	 *                error from the lower layer
+	 * @exception PageUnpinnedException       error from the lower layer
+	 * @exception InvalidFrameNumberException error from the lower layer
+	 * @exception HashEntryNotFoundException  error from the lower layer
+	 * @exception ReplacerException           error from the lower layer
 	 */
 	public void close()
 			throws PageUnpinnedException,
@@ -255,20 +236,13 @@ public class BTreeFile extends IndexFile
 	/**
 	 * Destroy entire B+ tree file.
 	 * 
-	 * @exception IOException
-	 *                error from the lower layer
-	 * @exception IteratorException
-	 *                iterator error
-	 * @exception UnpinPageException
-	 *                error when unpin a page
-	 * @exception FreePageException
-	 *                error when free a page
-	 * @exception DeleteFileEntryException
-	 *                failed when delete a file from DM
-	 * @exception ConstructPageException
-	 *                error in BT page constructor
-	 * @exception PinPageException
-	 *                failed when pin a page
+	 * @exception IOException              error from the lower layer
+	 * @exception IteratorException        iterator error
+	 * @exception UnpinPageException       error when unpin a page
+	 * @exception FreePageException        error when free a page
+	 * @exception DeleteFileEntryException failed when delete a file from DM
+	 * @exception ConstructPageException   error in BT page constructor
+	 * @exception PinPageException         failed when pin a page
 	 */
 	public void destroyFile()
 			throws IOException,
@@ -342,41 +316,24 @@ public class BTreeFile extends IndexFile
 	/**
 	 * insert record with the given key and rid
 	 * 
-	 * @param key
-	 *            the key of the record. Input parameter.
-	 * @param rid
-	 *            the rid of the record. Input parameter.
-	 * @exception KeyTooLongException
-	 *                key size exceeds the max keysize.
-	 * @exception KeyNotMatchException
-	 *                key is not integer key nor string key
-	 * @exception IOException
-	 *                error from the lower layer
-	 * @exception LeafInsertRecException
-	 *                insert error in leaf page
-	 * @exception IndexInsertRecException
-	 *                insert error in index page
-	 * @exception ConstructPageException
-	 *                error in BT page constructor
-	 * @exception UnpinPageException
-	 *                error when unpin a page
-	 * @exception PinPageException
-	 *                error when pin a page
-	 * @exception NodeNotMatchException
-	 *                node not match index page nor leaf page
-	 * @exception ConvertException
-	 *                error when convert between revord and byte
-	 *                array
-	 * @exception DeleteRecException
-	 *                error when delete in index page
-	 * @exception IndexSearchException
-	 *                error when search
-	 * @exception IteratorException
-	 *                iterator error
-	 * @exception LeafDeleteException
-	 *                error when delete in leaf page
-	 * @exception InsertException
-	 *                error when insert in index page
+	 * @param key the key of the record. Input parameter.
+	 * @param rid the rid of the record. Input parameter.
+	 * @exception KeyTooLongException     key size exceeds the max keysize.
+	 * @exception KeyNotMatchException    key is not integer key nor string key
+	 * @exception IOException             error from the lower layer
+	 * @exception LeafInsertRecException  insert error in leaf page
+	 * @exception IndexInsertRecException insert error in index page
+	 * @exception ConstructPageException  error in BT page constructor
+	 * @exception UnpinPageException      error when unpin a page
+	 * @exception PinPageException        error when pin a page
+	 * @exception NodeNotMatchException   node not match index page nor leaf page
+	 * @exception ConvertException        error when convert between revord and byte
+	 *                                    array
+	 * @exception DeleteRecException      error when delete in index page
+	 * @exception IndexSearchException    error when search
+	 * @exception IteratorException       iterator error
+	 * @exception LeafDeleteException     error when delete in leaf page
+	 * @exception InsertException         error when insert in index page
 	 */
 	public void insert(KeyClass key, RID rid)
 			throws KeyTooLongException,
@@ -890,45 +847,27 @@ public class BTreeFile extends IndexFile
 	 * delete leaf entry given its <key, rid> pair.
 	 * `rid' is IN the data entry; it is not the id of the data entry)
 	 * 
-	 * @param key
-	 *            the key in pair <key, rid>. Input Parameter.
-	 * @param rid
-	 *            the rid in pair <key, rid>. Input Parameter.
+	 * @param key the key in pair <key, rid>. Input Parameter.
+	 * @param rid the rid in pair <key, rid>. Input Parameter.
 	 * @return true if deleted. false if no such record.
-	 * @exception DeleteFashionException
-	 *                neither full delete nor naive delete
-	 * @exception LeafRedistributeException
-	 *                redistribution error in leaf pages
-	 * @exception RedistributeException
-	 *                redistribution error in index pages
-	 * @exception InsertRecException
-	 *                error when insert in index page
-	 * @exception KeyNotMatchException
-	 *                key is neither integer key nor string key
-	 * @exception UnpinPageException
-	 *                error when unpin a page
-	 * @exception IndexInsertRecException
-	 *                error when insert in index page
-	 * @exception FreePageException
-	 *                error in BT page constructor
-	 * @exception RecordNotFoundException
-	 *                error delete a record in a BT page
-	 * @exception PinPageException
-	 *                error when pin a page
-	 * @exception IndexFullDeleteException
-	 *                fill delete error
-	 * @exception LeafDeleteException
-	 *                delete error in leaf page
-	 * @exception IteratorException
-	 *                iterator error
-	 * @exception ConstructPageException
-	 *                error in BT page constructor
-	 * @exception DeleteRecException
-	 *                error when delete in index page
-	 * @exception IndexSearchException
-	 *                error in search in index pages
-	 * @exception IOException
-	 *                error from the lower layer
+	 * @exception DeleteFashionException    neither full delete nor naive delete
+	 * @exception LeafRedistributeException redistribution error in leaf pages
+	 * @exception RedistributeException     redistribution error in index pages
+	 * @exception InsertRecException        error when insert in index page
+	 * @exception KeyNotMatchException      key is neither integer key nor string
+	 *                                      key
+	 * @exception UnpinPageException        error when unpin a page
+	 * @exception IndexInsertRecException   error when insert in index page
+	 * @exception FreePageException         error in BT page constructor
+	 * @exception RecordNotFoundException   error delete a record in a BT page
+	 * @exception PinPageException          error when pin a page
+	 * @exception IndexFullDeleteException  fill delete error
+	 * @exception LeafDeleteException       delete error in leaf page
+	 * @exception IteratorException         iterator error
+	 * @exception ConstructPageException    error in BT page constructor
+	 * @exception DeleteRecException        error when delete in index page
+	 * @exception IndexSearchException      error in search in index pages
+	 * @exception IOException               error from the lower layer
 	 *
 	 */
 	public boolean Delete(KeyClass key, RID rid)
@@ -1652,22 +1591,14 @@ public class BTreeFile extends IndexFile
 	 * (5) lo_key!= null, hi_key!= null, lo_key < hi_key
 	 * range scan from lo_key to hi_key
 	 * 
-	 * @param lo_key
-	 *            the key where we begin scanning. Input parameter.
-	 * @param hi_key
-	 *            the key where we stop scanning. Input parameter.
-	 * @exception IOException
-	 *                error from the lower layer
-	 * @exception KeyNotMatchException
-	 *                key is not integer key nor string key
-	 * @exception IteratorException
-	 *                iterator error
-	 * @exception ConstructPageException
-	 *                error in BT page constructor
-	 * @exception PinPageException
-	 *                error when pin a page
-	 * @exception UnpinPageException
-	 *                error when unpin a page
+	 * @param lo_key the key where we begin scanning. Input parameter.
+	 * @param hi_key the key where we stop scanning. Input parameter.
+	 * @exception IOException            error from the lower layer
+	 * @exception KeyNotMatchException   key is not integer key nor string key
+	 * @exception IteratorException      iterator error
+	 * @exception ConstructPageException error in BT page constructor
+	 * @exception PinPageException       error when pin a page
+	 * @exception UnpinPageException     error when unpin a page
 	 */
 	public BTFileScan new_scan(KeyClass lo_key, KeyClass hi_key)
 			throws IOException,

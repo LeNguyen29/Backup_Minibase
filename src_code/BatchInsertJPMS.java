@@ -1,181 +1,63 @@
+
 import diskmgr.*;
 import global.*;
 import heap.*;
 import lshfindex.LSHFIndexFile;
+import solution.SolutionHelper;
 
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.util.*;
 
 public class BatchInsertJPMS {
     public static void main(String[] args) throws Exception {
 
-        RegisterLogstreamFileAndRedirectLogOutput();
-
-        if (args.length != 4) {
-            System.err.println("Usage: batchinsert h L DATAFILENAME DBNAME");
-            System.exit(1);
-        }
+        registerLogstreamFileAndRedirectLogOutput();
 
         try {
-            // parse command-line arguments
-            int h = Integer.parseInt(args[0]);
-            int L = Integer.parseInt(args[1]);
-            String dataFileName = args[2];
-            String dbName = args[3];
 
-            // open the data file
-            BufferedReader br = new BufferedReader(new FileReader(dataFileName));
+            CommandInput input = CommandInput.parseFromArgs(args);
 
-            // read number of attributes
-            String line = br.readLine();
-            if (line == null) {
-                System.err.println("Data file is empty.");
-                System.exit(1);
-            }
-            int numAttrs = Integer.parseInt(line.trim());
+            new SystemDefs(input.databaseName, 10 * GlobalConst.NUMBUF, 10 * GlobalConst.NUMBUF, "Clock");
 
-            // read columns type definition
-            line = br.readLine();
-            if (line == null) {
-                System.err.println("Missing attribute types line.");
-                System.exit(1);
-            }
+            Heapfile hf = new Heapfile(input.databaseName);
 
-            // split by space
-            String[] typeTokens = line.trim().split("\\s+");
-            if (typeTokens.length != numAttrs) {
-                System.err.println("Number of attribute types does not match number of attributes.");
-                System.exit(1);
-            }
+            LSHFIndexFile lshfIndex = new LSHFIndexFile(input.databaseName, input.lshHashPerLayerCount, input.lshLayerCount);
 
-            // create heapfile with the DBNAME
-            // initialize the database
-            int numPages = 100 * GlobalConst.NUMBUF; // Total number of pages
-            int numBufs = 100 * GlobalConst.NUMBUF; // Number of buffer pages
-            String replacementPolicy = "Clock";
-            new SystemDefs(dbName, numPages, numBufs, replacementPolicy);
-
-            Heapfile hf = new Heapfile(dbName);
-
-            // create a single LSHFIndexFile for all vector attributes
-            LSHFIndexFile lshfIndex = new LSHFIndexFile(dbName, h, L);
-
+            ImportingDataInformation importingData = getDataFromSourceFile(input.fileContainsDataFilePath);
             // insert tuples into the heapfile and LSHF index
-            int tupleCount = 0;
-
-            Boolean shouldContinue = true;
-            do {
-                String[] tupleColumnValues = new String[numAttrs];
-
-                for (int i = 0; i < numAttrs; i++) {
-                    line = br.readLine();
-                    if (line == null) {
-                        shouldContinue = false;
-                        break;
-                    }
-                    tupleColumnValues[i] = line.trim();
-                }
-
-                if (!shouldContinue) {
-                    // only the last tuple will have issue, others will work, so this is a break,
-                    // not a continue
-                    System.out.println(
-                            "Encountered empty line ahead, suggesting end of file. Previously processed entry with index: "
-                                    + tupleCount);
-                    break;
-                }
-
-                TupleMetadata tupleMetadata = GetTupleMetadataFromColumnDeclarations(typeTokens);
-
-                // declare headers for the tuple, allocating sizes for it
-                Tuple tuple = ParseTupleData(tupleColumnValues, tupleMetadata);
+            for (Tuple tuple : importingData.tuples) {
 
                 RID rid = hf.insertRecord(tuple.getTupleByteArray());
 
+                Integer numAttrs = importingData.metadata.attrTypes.length;
                 // Insert the vector into the LSHF index with the RID
                 for (int i = 0; i < numAttrs; i++) {
-                    if (tupleMetadata.attrTypes[i].attrType == AttrType.attrVector100D) {
-                        String[] vectorTokens = tupleColumnValues[i].split("\\s+");
-                        short[] vector = new short[vectorTokens.length];
-                        for (int j = 0; j < vectorTokens.length; j++) {
-                            double decimalValue = Double.parseDouble(vectorTokens[j]);
-                            vector[j] = (short) Math.round(decimalValue);
-                        }
-                        Vector100Dtype vector100D = new Vector100Dtype(vector);
-                        lshfIndex.insert(vector100D, rid); // Pass the RID to the LSHFIndexFile
+                    if (importingData.metadata.attrTypes[i].attrType == AttrType.attrVector100D) {
+                        Vector100Dtype key = tuple.get100DVectFld(i);
+                        lshfIndex.insert(key, rid);
                     }
                 }
-
-                tupleCount++;
-            } while (shouldContinue);
-
-            br.close();
+            }
 
             // store to DB
             // After inserting all vectors into the LSHFIndexFile
-            try {
-                // Step 1: Allocate a page for the LSHFIndexFile metadata
-                PageId lshfIndexPageId = new PageId();
-                SystemDefs.JavabaseDB.allocate_page(lshfIndexPageId);
+  
 
-                // Step 2: Serialize the LSHFIndexFile metadata
-                Page lshfIndexPage = new Page();
-                byte[] pageData = lshfIndexPage.getpage();
-                String metadata = "h=" + h + "\nL=" + L + "\n";
-                // Ensure the rest of the page buffer is cleared
-                Arrays.fill(pageData, metadata.length(), pageData.length, (byte) 0);
-                System.arraycopy(metadata.getBytes(), 0, pageData, 0, metadata.length());
-
-                // Step 3: Write the metadata to the allocated page
-                SystemDefs.JavabaseDB.write_page(lshfIndexPageId, lshfIndexPage);
-
-                // Step 4: Add a file entry for the LSHFIndexFile in the database
-                System.out.println("Adding file entry for LSHFIndexFile: " + dbName + "_lshfindex, PageId: "
-                        + lshfIndexPageId.pid);
-                SystemDefs.JavabaseDB.add_file_entry(dbName + "JamesF4", lshfIndexPageId);
-
-                // Step 5: Save each B+ tree layer of the LSHFIndexFile
-                for (int i = 0; i < L; i++) {
-                    String layerFileName = dbName + "_layer" + i + "JamesF4";
-                    PageId layerPageId = new PageId();
-                    SystemDefs.JavabaseDB.allocate_page(layerPageId);
-
-                    // Serialize the layer metadata (e.g., file name)
-                    Page layerPage = new Page();
-                    byte[] layerPageData = layerPage.getpage();
-                    System.arraycopy(layerFileName.getBytes(), 0, layerPageData, 0, layerFileName.length());
-
-                    // Write the layer metadata to the allocated page
-                    SystemDefs.JavabaseDB.write_page(layerPageId, layerPage);
-
-                    // Add a file entry for the layer
-                    SystemDefs.JavabaseDB.add_file_entry(layerFileName, layerPageId);
-                }
-
-                System.out.println("LSHFIndexFile structure saved to the database.");
-            } catch (Exception e) {
-                System.err.println("Error saving LSHFIndexFile to the database: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-            // close the LSHF index
-            lshfIndex.print();
-            lshfIndex.close();
+            // close the LSHF index            lshfIndex.close();
 
             // flush all pages
-            SystemDefs.JavabaseBM.flushAllPages();
+            // SystemDefs.JavabaseBM.flushAllPages();
 
             // print number of disk pages read and written
             System.out.println("Number of disk pages read: " + PCounter.rcounter);
             System.out.println("Number of disk pages written: " + PCounter.wcounter);
-            System.out.println("Inserted " + tupleCount + " tuples.");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static TupleMetadata GetTupleMetadataFromColumnDeclarations(String[] typeTokens) {
+    private static TupleMetadata getTupleMetadataFromColumnDeclarations(String[] typeTokens) {
         AttrType[] attrTypes = new AttrType[typeTokens.length];
         short[] strSizes = new short[typeTokens.length];
 
@@ -205,7 +87,7 @@ public class BatchInsertJPMS {
         return new TupleMetadata(attrTypes, strSizes);
     }
 
-    private static void RegisterLogstreamFileAndRedirectLogOutput() {
+    private static void registerLogstreamFileAndRedirectLogOutput() {
         try {
             FileOutputStream logFile = new FileOutputStream("logfile.txt"); // Append mode
             PrintStream logStream = new PrintStream(logFile);
@@ -220,7 +102,7 @@ public class BatchInsertJPMS {
         }
     }
 
-    private static Tuple ParseTupleData(String[] tupleColumnValues, TupleMetadata tupleMetadata) throws Exception {
+    private static Tuple parseTupleData(String[] tupleColumnValues, TupleMetadata tupleMetadata) throws Exception {
         Tuple tuple = new Tuple();
 
         tuple.setHdr((short) tupleMetadata.attrTypes.length, tupleMetadata.attrTypes, tupleMetadata.strSizes);
@@ -253,6 +135,68 @@ public class BatchInsertJPMS {
         }
 
         return tuple;
+    }
+
+    private static ImportingDataInformation getDataFromSourceFile(String fileName) throws Exception {
+        
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+
+        // read number of attributes
+        String line = br.readLine();
+        if (line == null) {
+            System.err.println("Data file is empty.");
+            System.exit(1);
+        }
+        int numAttrs = Integer.parseInt(line.trim());
+
+        // read columns type definition
+        line = br.readLine();
+        if (line == null) {
+            System.err.println("Missing attribute types line.");
+            System.exit(1);
+        }
+
+        // split by space
+        String[] typeTokens = line.trim().split("\\s+");
+        if (typeTokens.length != numAttrs) {
+            System.err.println("Number of attribute types does not match number of attributes.");
+            System.exit(1);
+        }
+
+        TupleMetadata metadata = getTupleMetadataFromColumnDeclarations(typeTokens);
+
+        ArrayList<Tuple> tuples = new ArrayList<Tuple>();
+        Boolean shouldContinue = true;
+        do {
+            String[] tupleColumnValues = new String[numAttrs];
+
+            for (int i = 0; i < numAttrs; i++) {
+                line = br.readLine();
+                if (line == null) {
+                    shouldContinue = false;
+                    break;
+                }
+                tupleColumnValues[i] = line.trim();
+            }
+            if (!shouldContinue) {
+                break;
+            }
+            
+            tuples.add(parseTupleData(tupleColumnValues, metadata));
+        
+        } while (shouldContinue);
+        System.out.println("Found a total of " + tuples.toArray().length);
+        return new ImportingDataInformation(metadata, tuples.toArray(new Tuple[tuples.toArray().length]));
+    }
+}
+
+class ImportingDataInformation {
+    public final TupleMetadata metadata;
+    public final Tuple[] tuples;
+
+    public ImportingDataInformation(TupleMetadata metadata, Tuple[] tuples) {
+        this.metadata = metadata;
+        this.tuples = tuples;
     }
 }
 
@@ -288,5 +232,33 @@ class PrefixPrintStream extends PrintStream {
     @Override
     public void print(String message) {
         super.print(prefix + message);
+    }
+}
+
+
+class CommandInput {
+    public final String databaseName;
+    public final String fileContainsDataFilePath;
+    public final Integer lshLayerCount;
+    public final Integer lshHashPerLayerCount;
+
+    public CommandInput(String dbname, String path, Integer layer, Integer hashPerLayer) {
+        this.databaseName = dbname;
+        this.fileContainsDataFilePath = path;
+        this.lshLayerCount = layer;
+        this.lshHashPerLayerCount = hashPerLayer;
+    }
+
+    public static CommandInput parseFromArgs(String[] args) throws InvalidParameterException {
+        if (args.length != 4) {
+            throw new InvalidParameterException("Parameters should be 4");
+        }
+
+        int hashes = Integer.parseInt(args[0]);
+        int layers = Integer.parseInt(args[1]);
+        String dataFileName = args[2];
+        String dbName = args[3];
+
+        return new CommandInput(dbName, dataFileName, layers, hashes);
     }
 }

@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -13,8 +14,8 @@ import lshfindex.*;
  * Query program for MiniBase.
  * Usage: java query DBNAME QSNAME INDEXOPTION NUMBUF
  */
-public class queryJPMS {
-    public static void main(String[] args) {
+public class QueryJPMS {
+    public static void main(String[] args) throws Exception {
 
         CommandInput input = CommandInput.parseFromArgs(args);
 
@@ -29,14 +30,13 @@ public class queryJPMS {
 
         CustomQuery query = CustomQuery.parseFromQueryString(queryString);
 
-        int numPages = 10 * GlobalConst.NUMBUF;
-        new SystemDefs(input.databaseName, numPages, input.numberOfBuffer, "Clock");
+        new SystemDefs(input.databaseName, 10 * GlobalConst.NUMBUF, input.numberOfBuffer, "Clock");
 
         Heapfile hf = new Heapfile(input.databaseName);
 
         // Read metadata from the file
         int h = 0, L = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(dbName + "_meta"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(input.databaseName + "_meta"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("h=")) {
@@ -56,13 +56,13 @@ public class queryJPMS {
 
         // Reopen the LSHFIndexFile using the metadata
         LSHFIndexFile lshfIndex = null;
-        if (indexOption.equalsIgnoreCase("Y")) {
+        if (input.isUsingIndex) {
             try {
                 // Get the starting page ID of the LSHFIndexFile
-                System.out.println("Retrieving file entry for LSHFIndexFile: " + dbName);
-                PageId lshfIndexPageId = SystemDefs.JavabaseDB.get_file_entry(dbName);
+                System.out.println("Retrieving file entry for LSHFIndexFile: " + input.databaseName);
+                PageId lshfIndexPageId = SystemDefs.JavabaseDB.get_file_entry(input.databaseName);
                 if (lshfIndexPageId == null) {
-                    throw new IOException("File entry for LSHFIndexFile not found: " + dbName + "_lshfindex");
+                    throw new IOException("File entry for LSHFIndexFile not found: " + input.databaseName + "_lshfindex");
                 }
                 System.out.println("Retrieved PageId: " + lshfIndexPageId.pid);
 
@@ -83,7 +83,7 @@ public class queryJPMS {
 
                 h = Integer.parseInt(lines[0].split("=")[1]); // Parse h value
                 L = Integer.parseInt(lines[1].split("=")[1]); // Parse L value
-                lshfIndex = new LSHFIndexFile(dbName, h, L);
+                lshfIndex = new LSHFIndexFile(input.databaseName, h, L);
                 System.out.println("LSHFIndexFile structure loaded from the database.");
             } catch (Exception e) {
                 System.err.println("Error loading LSHFIndexFile from the database: " + e.getMessage());
@@ -94,30 +94,30 @@ public class queryJPMS {
 
         // Perform the query
         int count = 0;
-        if (indexOption.equalsIgnoreCase("Y") && lshfIndex != null) {
-            try {
-                if (isRange) {
-                    // Perform range query using LSHFIndexFile
-                    Vector<RID> results = lshfIndex.LSHFFileRangeScan(new Vector100DKey(targetVector, 0), thresholdOrK);
-                    count = processResults(hf, results, outputFields);
-                } else if (isNN) {
-                    // Perform nearest neighbor query using LSHFIndexFile
-                    Vector<RID> results = lshfIndex.LSHFFileNNScan(new Vector100DKey(targetVector, 0), thresholdOrK);
-                    count = processResults(hf, results, outputFields);
-                }
-            } catch (Exception e) {
-                System.err.println("Error performing index query: " + e.getMessage());
-                System.exit(1);
-            }
-        } else {
-            // Perform full heapfile scan
-            try {
-                count = fullHeapfileScan(hf, targetVector, thresholdOrK, isRange, outputFields, qa);
-            } catch (Exception e) {
-                System.err.println("Error performing full heapfile scan: " + e.getMessage());
-                System.exit(1);
-            }
-        }
+        // if (input.useIndex && lshfIndex != null) {
+        //     try {
+        //         if (isRange) {
+        //             // Perform range query using LSHFIndexFile
+        //             Vector<RID> results = lshfIndex.LSHFFileRangeScan(new Vector100DKey(targetVector, 0), thresholdOrK);
+        //             count = processResults(hf, results, outputFields);
+        //         } else if (isNN) {
+        //             // Perform nearest neighbor query using LSHFIndexFile
+        //             Vector<RID> results = lshfIndex.LSHFFileNNScan(new Vector100DKey(targetVector, 0), thresholdOrK);
+        //             count = processResults(hf, results, outputFields);
+        //         }
+        //     } catch (Exception e) {
+        //         System.err.println("Error performing index query: " + e.getMessage());
+        //         System.exit(1);
+        //     }
+        // } else {
+        //     // Perform full heapfile scan
+        //     try {
+        //         count = fullHeapfileScan(hf, targetVector, thresholdOrK, isRange, outputFields, qa);
+        //     } catch (Exception e) {
+        //         System.err.println("Error performing full heapfile scan: " + e.getMessage());
+        //         System.exit(1);
+        //     }
+        // }
 
         // Output query results
         System.out.println("Query Results:");
@@ -256,7 +256,6 @@ class CustomQuery {
 
     public static CustomQuery parseFromQueryString(String query) throws Exception, InvalidParameterException {
 
-        // can improve this to accommodate nested queries ? eh too dreamy
         int firstOpeningParentheses = query.indexOf('(');
         String queryTypeString = query.substring(0, firstOpeningParentheses);
 
@@ -277,6 +276,7 @@ class CustomQuery {
         Integer targetColumnNumber = Integer.parseInt(queryFunctionParameters[0]);
 
         String filePath = queryFunctionParameters[1];
+
         short[] vectorValues = getVectorFromFile(filePath);
 
         Integer nonNegativeRangeOrDistance = Integer.parseInt(queryFunctionParameters[2]);

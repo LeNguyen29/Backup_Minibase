@@ -535,7 +535,7 @@ public class DB implements GlobalConst {
     // going to put the new file entry.
 
     dp.setFileEntry(start_page_num, fname, free_slot);
-
+    System.out.println("Registering IRSS FILE "+fname);
     unpinPage(hpid, true /* dirty */);
 
   }
@@ -615,6 +615,8 @@ public class DB implements GlobalConst {
 
     // Have to delete record at hpnum:slot
     tmppid.pid = INVALID_PAGE;
+
+    System.out.println("DBSystem is found and running");
     dp.setFileEntry(tmppid, "\0", slot);
 
     unpinPage(hpid, true /* dirty */);
